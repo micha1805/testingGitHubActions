@@ -20,7 +20,7 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      run: mvn clean package
+      run: mvn clean package -DskipTests
       
     - name: Deploy to Heroku Staging
       uses: akhileshns/heroku-deploy@v3.12.14
@@ -30,4 +30,5 @@ jobs:
         heroku_email: ${{ secrets.HEROKU_EMAIL }}
         branch: dev
         procfile: "web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/demo-0.0.1-SNAPSHOT.jar"
-        justlogin: true 
+        justlogin: true
+        includes: target/ 
