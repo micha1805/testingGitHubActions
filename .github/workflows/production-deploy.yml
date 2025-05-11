@@ -1,13 +1,15 @@
-name: Deploy to Staging
+name: Production Deploy
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ master ]
 
 jobs:
-  deploy:
+  deploy-production:
     runs-on: ubuntu-latest
-    environment: staging
+    environment:
+      name: production
+      url: https://${{ secrets.HEROKU_PRODUCTION_APP_NAME }}.herokuapp.com
     
     steps:
     - uses: actions/checkout@v3
@@ -25,10 +27,10 @@ jobs:
     - name: Install Heroku CLI
       run: curl https://cli-assets.heroku.com/install.sh | sh
       
-    - name: Deploy to Heroku Staging
+    - name: Deploy to Heroku Production
       uses: akhileshns/heroku-deploy@v3.12.14
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-        heroku_app_name: ${{ secrets.HEROKU_STAGING_APP_NAME }}
+        heroku_app_name: ${{ secrets.HEROKU_PRODUCTION_APP_NAME }}
         heroku_email: ${{ secrets.HEROKU_EMAIL }}
         procfile: "web: java $JAVA_OPTS -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=$PORT" 
