@@ -21,6 +21,6 @@ public class HelloControllerTest {
     public void shouldReturnHelloWorld() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Hello World from Staging Environment!"));
+                .andExpect(content().string("Hello from local environment!"));
     }
 } 

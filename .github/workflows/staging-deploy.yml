@@ -31,4 +31,4 @@ jobs:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
         heroku_app_name: ${{ secrets.HEROKU_STAGING_APP_NAME }}
         heroku_email: ${{ secrets.HEROKU_EMAIL }}
-        procfile: "web: java $JAVA_OPTS -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=$PORT" 
+        procfile: "web: java $JAVA_OPTS -jar -Dspring.profiles.active=staging target/demo-0.0.1-SNAPSHOT.jar --server.port=$PORT" 
