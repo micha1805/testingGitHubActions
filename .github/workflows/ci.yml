@@ -24,6 +24,7 @@ jobs:
       run: mvn clean package
       
     - name: Upload artifact
+      if: success()
       uses: actions/upload-artifact@v3
       with:
         name: app
