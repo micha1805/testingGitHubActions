@@ -15,10 +15,28 @@ L'application utilise trois workflows GitHub Actions différents :
    - Build l'application
    - Déploie automatiquement sur Heroku (environnement de staging)
 
-3. **Build Master**
-   - S'exécute uniquement sur la branche `master`
-   - Build l'application
-   - Crée un artifact mais ne déploie pas automatiquement
+3. **Déploiement Production**
+   - Déploiement manuel via GitHub Actions
+   - S'exécute depuis la branche `master`
+   - Nécessite une approbation manuelle
+
+## Environnements
+
+L'application utilise différents profils Spring Boot selon l'environnement :
+
+1. **Test** (`application-test.properties`)
+   - Utilisé pour les tests automatisés
+   - Logs en mode DEBUG
+
+2. **Staging** (`application-staging.properties`)
+   - Déploiement automatique depuis la branche `dev`
+   - Logs en mode DEBUG pour le développement
+
+3. **Production** (`application-production.properties`)
+   - Déploiement manuel depuis `master`
+   - Logs en mode INFO uniquement
+
+Pour vérifier l'environnement actif, accédez à la racine de l'application (`/`). Vous verrez les profils actifs et les profils par défaut.
 
 ## Prérequis
 
@@ -28,12 +46,15 @@ L'application utilise trois workflows GitHub Actions différents :
 
 ## Configuration Heroku
 
-1. Créer une nouvelle application sur Heroku pour l'environnement de staging
+1. Créer deux applications sur Heroku :
+   - Une pour l'environnement de staging
+   - Une pour l'environnement de production
 
 2. Configurer les secrets GitHub suivants :
    - `HEROKU_API_KEY` : Votre clé API Heroku
    - `HEROKU_EMAIL` : Votre email Heroku
    - `HEROKU_STAGING_APP_NAME` : Le nom de votre application Heroku pour le staging
+   - `HEROKU_PRODUCTION_APP_NAME` : Le nom de votre application Heroku pour la production
 
 Pour obtenir votre clé API Heroku :
 1. Connectez-vous à votre compte Heroku
@@ -69,17 +90,15 @@ Pour exécuter les tests :
 mvn test
 ```
 
+Les tests utilisent un profil dédié qui peut être consulté dans `src/test/resources/application-test.properties`.
+
 ## Déploiement manuel sur Heroku
 
-Si vous souhaitez déployer manuellement (en dehors du pipeline automatique) :
+Pour un déploiement en production :
+1. Assurez-vous que vos changements sont sur la branche `master`
+2. Allez dans l'onglet "Actions" de GitHub
+3. Sélectionnez le workflow "Deploy to Production"
+4. Cliquez sur "Run workflow"
+5. Confirmez le déploiement
 
-1. Installer le CLI Heroku
-2. Se connecter à Heroku
-```bash
-heroku login
-```
-
-3. Déployer l'application
-```bash
-git push heroku main
-``` 
+Pour un déploiement en staging, il suffit de pousser sur la branche `dev` :
