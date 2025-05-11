@@ -21,11 +21,4 @@ jobs:
         cache: maven
         
     - name: Build and run tests
-      run: mvn clean package
-      
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: app
-        path: target/*.jar
-        retention-days: 1 
+      run: mvn clean package 
